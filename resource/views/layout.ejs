@@ -89,7 +89,7 @@
         }
       });
 
-      var socket = io.connect(window.location.hostname+':81');
+      var socket = io.connect(window.location.hostname+':3000');
       socket.on('read', function (data) {
         var data = data.data
         if(data.id != id){
