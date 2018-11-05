@@ -6,6 +6,7 @@ const static = require('koa-static')
 const path = require('path')
 const views = require('koa-views')
 const helmet = require("koa-helmet")
+const http = require("http")
 
 
 let {
@@ -26,6 +27,16 @@ app.use(static(path.join( __dirname,  STATIC_PATH)))
 
 app.use(router.routes(),router.allowedMethods())
 
-
-
-module.exports = app 
+const server = http.createServer(app.callback());
+const io = require('socket.io')(server)
+io.on('connection', function (socket) {
+  socket.on('write', function (data) {
+    // socket.emit('read', { data })
+    io.sockets.emit('read', { data })
+    // socket.broadcast.emit('read', { data });
+  });
+})
+server.listen(3000, function(){
+  console.log('listening on *:3000');
+})
+module.exports = app

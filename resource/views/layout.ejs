@@ -65,17 +65,31 @@
     <script src="/bootstrap.min.js"></script>
     <!-- Main Quill library -->
     <script src="/quill.js"></script>
+    <script src="/socket.io.js"></script>
     <script>
       var options = {
-        // debug: 'info',
-        // modules: {
-        //   toolbar: '#toolbar'
-        // },
+
         placeholder: 'Compose an epic...',
         // readOnly: true,
         theme: 'bubble'
       };
       var editor = new Quill('#editor', options);
+      var id = new Date()*1
+      editor.on('text-change', function(delta, oldDelta, source) {
+        if(source === 'api'){
+        }else if(source === 'user'){
+          froms = 'user'
+          socket.emit('write',{data:JSON.stringify(editor.getContents()),id:id})
+        }
+      });
+
+      var socket = io.connect(window.location.hostname+':3000');
+      socket.on('read', function (data) {
+        var data = data.data
+        if(data.id != id){
+          editor.setContents(JSON.parse(data.data))
+        }
+      })
     </script>
 
   </body>
