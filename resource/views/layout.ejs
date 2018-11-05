@@ -60,15 +60,21 @@
       </div>
 
     </div>
-
+    <link rel="stylesheet"
+          href="/sublime.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
     <script src="/jquery.min.js"></script>
     <script src="/bootstrap.min.js"></script>
     <!-- Main Quill library -->
     <script src="/quill.js"></script>
     <script src="/socket.io.js"></script>
     <script>
-      var options = {
 
+      var options = {
+        modules: {
+          syntax: true,
+          toolbar: [['code-block']] // Include syntax module
+        },
         placeholder: 'Compose an epic...',
         // readOnly: true,
         theme: 'bubble'
@@ -83,7 +89,7 @@
         }
       });
 
-      var socket = io.connect(window.location.hostname+':3000');
+      var socket = io.connect(window.location.hostname+':81');
       socket.on('read', function (data) {
         var data = data.data
         if(data.id != id){

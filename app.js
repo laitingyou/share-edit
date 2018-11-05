@@ -33,7 +33,6 @@ io.on('connection', function (socket) {
   socket.on('write', function (data) {
     // socket.emit('read', { data })
     io.sockets.emit('read', { data })
-    // socket.broadcast.emit('read', { data });
   });
 })
 server.listen(3000, function(){
